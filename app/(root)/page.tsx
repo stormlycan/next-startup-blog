@@ -1,7 +1,7 @@
 import SearchFrom from "@/components/SearchFrom";
 import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
-import { client } from "@/sanity/lib/client";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
+import {sanityFetch, SanityLive} from "@/sanity/lib/live";
 
 export default async function Home({
   searchParams,
@@ -9,9 +9,10 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
+  const params = { search: query || null };
 
-  const posts = await client.fetch(STARTUP_QUERY);
-
+  const {data: posts} = await sanityFetch({query: STARTUP_QUERY, params})
+  // console.log( data )
   return (
     <>
       <section className="pink_container">
@@ -20,7 +21,7 @@ export default async function Home({
         </h1>
         <p className="sub-heading !max-w-3xl">
           Submit Ideas, Vote on Pitches and get notices in Virtual
-          Compentitions.
+          Competitions.
         </p>
 
         <SearchFrom query={query} />
@@ -28,7 +29,7 @@ export default async function Home({
 
       <section className="section_container">
         <p className="text-30-semibold">
-          {query ? `Search results for ${query}` : "All Startups"}
+          {query ? `Search results for "${query}"` : "All Startups"}
         </p>
 
         <ul className="mt-7 card_grid">
@@ -41,6 +42,8 @@ export default async function Home({
           )}
         </ul>
       </section>
+
+      <SanityLive />
     </>
   );
 }
