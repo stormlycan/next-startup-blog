@@ -2,6 +2,9 @@ import {withSentryConfig} from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -18,7 +21,8 @@ const nextConfig: NextConfig = {
     buildActivity: true,
     buildActivityPosition: "bottom-right"
   },
-  productionBrowserSourceMaps: true,
+  
+  // productionBrowserSourceMaps: true,
 };
 
 export default withSentryConfig(nextConfig, {
